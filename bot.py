@@ -7,13 +7,6 @@ Uses Google Gemini API (Free)
 import os
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import threading
-
-
-# Botunun ana başlama fonksiyonundan hemen ÖNCE bu thread'i başlat:
-threading.Thread(target=run_health_check, daemon=True).start()
-
-# ... bot.run(TOKEN) kodların buralarda bir yerde olmalı ...
-
 import discord
 from discord.ext import commands, tasks
 import os
