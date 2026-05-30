@@ -4,6 +4,26 @@ OnlyGhost Discord Bot - AI-Powered Studio Manager
 Handles devlog generation, server management, and community updates
 Uses Google Gemini API (Free)
 """
+import os
+from http.server import BaseHTTPRequestHandler, HTTPServer
+import threading
+
+# Render'ın port hatası vermemesi için basit bir web sunucu fonksiyonu
+class HealthCheckHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"Bot aktif!")
+
+def run_health_check():
+    port = int(os.environ.get("PORT", 8080))
+    server = HTTPServer(('0.0.0.0', port), HealthCheckHandler)
+    server.serve_forever()
+
+# Botunun ana başlama fonksiyonundan hemen ÖNCE bu thread'i başlat:
+threading.Thread(target=run_health_check, daemon=True).start()
+
+# ... bot.run(TOKEN) kodların buralarda bir yerde olmalı ...
 
 import discord
 from discord.ext import commands, tasks
